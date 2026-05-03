@@ -1,0 +1,13 @@
+{
+  "run_label": "baseline",
+  "overall_accuracy": 99.0,
+  "per_category": {
+    "engineering": 100.0,
+    "regulatory": 100.0,
+    "qa": 96.0,
+    "general": 100.0
+  },
+  "total_correct": 99,
+  "total_examples": 100,
+  "failure_count": 1
+}
