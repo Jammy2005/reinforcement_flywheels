@@ -1,38 +1,36 @@
 from transformers import pipeline
 import torch
 
-# use MPS (Apple Silicon GPU) if available, otherwise CPU
 device = 0 if torch.backends.mps.is_available() else -1
+
+CATEGORIES = ["engineering", "regulatory", "qa", "general"]
 
 print("Loading model...")
 classifier_pipeline = pipeline(
     "zero-shot-classification",
-    model="cross-encoder/nli-MiniLM2-L6-H768",  # tiny 66MB model
+    model="typeform/distilbert-base-uncased-mnli",
     device=device
 )
 print("Model loaded.")
-
-CATEGORIES = ["engineering", "regulatory", "qa", "general"]
 
 def classify(text: str) -> str:
     result = classifier_pipeline(
         text,
         candidate_labels=CATEGORIES,
-        hypothesis_template="This ticket is about {}."
+        hypothesis_template="This support ticket is about {}."
     )
-    # returns labels sorted by confidence — take the top one
     return result["labels"][0]
 
 
 if __name__ == "__main__":
-    # quick sanity check
     tests = [
-        "The build pipeline is failing on the docker step",
-        "We need to update the 510k submission",
-        "Test case 47 is failing on the cardiac monitor",
-        "When is the team offsite?"
+        ("The build pipeline is failing on the docker step", "engineering"),
+        ("We need to update the 510k submission", "regulatory"),
+        ("Test case 47 is failing on the cardiac monitor", "qa"),
+        ("When is the team offsite?", "general")
     ]
     
-    for test in tests:
-        label = classify(test)
-        print(f"{label:<12} ← {test}")
+    for text, expected in tests:
+        predicted = classify(text)
+        status = "✓" if predicted == expected else "✗"
+        print(f"{status} predicted={predicted:<12} expected={expected:<12} ← {text}")

@@ -1,13 +1,13 @@
 {
   "run_label": "baseline",
-  "overall_accuracy": 60.0,
+  "overall_accuracy": 38.0,
   "per_category": {
-    "engineering": 40.0,
-    "regulatory": 96.0,
-    "qa": 28.0,
-    "general": 76.0
+    "engineering": 4.0,
+    "regulatory": 92.0,
+    "qa": 40.0,
+    "general": 16.0
   },
-  "total_correct": 60,
+  "total_correct": 38,
   "total_examples": 100,
-  "failure_count": 40
+  "failure_count": 62
 }
