@@ -14,31 +14,9 @@ CATEGORIES = ["engineering", "regulatory", "qa", "general"]
 # THE CLASSIFIER
 # This is what we're evaluating.
 # Right now: zero-shot Claude Haiku (our baseline)
-# Later: we swap this out for our fine-tuned model
+# Later: we swap this out for our fine-tuned model WER HERE NOW
 # ─────────────────────────────────────────
-def classify(text: str) -> str:
-    response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=10,
-        system="""You are a ticket classifier for a medical device company.
-Classify the ticket into exactly one of these categories:
-- engineering
-- regulatory  
-- qa
-- general
-
-Reply with a single word only. No explanation, no punctuation.""",
-        messages=[{"role": "user", "content": text}]
-    )
-    
-    predicted = response.content[0].text.strip().lower()
-    
-    # sanitise — model might return something unexpected
-    if predicted not in CATEGORIES:
-        predicted = "general"  # fallback
-    
-    return predicted
-
+from classifier import classify
 
 # ─────────────────────────────────────────
 # THE EVAL RUNNER
